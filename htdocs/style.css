@@ -16,7 +16,7 @@ body {
 }
 
     #banner {
-        background: white;
+        background-color: white;
         color: black;
         display: flex;
         flex-direction: row;
@@ -163,7 +163,7 @@ body {
                     }
 
                     .vehicleWait_unit {
-                        font-size: 60px;
+                        font-size: 50px;
                         opacity: .6;
                     }
 
@@ -173,11 +173,11 @@ body {
     }
 
     .vehicleWait_value {
-        font-size: 160px;
+        font-size: 140px;
     }
 
     .vehicleWait_unit {
-        font-size: 40px;
+        font-size: 30px;
     }
 }
 
@@ -187,11 +187,11 @@ body {
     }
 
     .vehicleWait_value {
-        font-size: 120px;
+        font-size: 100px;
     }
 
     .vehicleWait_unit {
-        font-size: 30px;
+        font-size: 15px;
     }
 }
 
@@ -201,10 +201,10 @@ body {
     }
 
     .vehicleWait_value {
-        font-size: 80px;
+        font-size: 60px;
     }
 
     .vehicleWait_unit {
-        font-size: 20px;
+        font-size: 10px;
     }
 }
