@@ -14,6 +14,9 @@ function updateElements(display) {
             });
             $("body").attr("data-minimumwait", response.minimumwait);
 
+            // Storing limit
+            objectsLimit = urlParams.get("limit")==null ? response.limit ?? 0 : parseInt(urlParams.get("limit"));
+
 
             // List all travels
             response.vehicles.forEach(travel => {
@@ -55,6 +58,9 @@ function updateElements(display) {
                         vehicle.attr("data-arrivalTime", travel.arrival.datetime);
                     else
                         vehicle.attr("data-arrivalTime", null);
+                    
+                    // Add waiting time data
+                    vehicle.attr("data-waitingTime", 0);
 
                     // Create vehicle title
                     var title = $("<div>")
@@ -105,7 +111,14 @@ function updateElements(display) {
 
                 }
 
+                // Convert datetime to waiting time
                 updateTimings(travel.GUID);
+
+                // Sort objects
+                sortObjects();
+    
+                // Limit objects
+                limitObjects(objectsLimit);
             });
 
         },
@@ -157,6 +170,9 @@ function updateTimings(GUID) {
         console.log("    Departure at " + dateDeparture);
         console.log("    => in " + deltaDeparture + " sec");
 
+        // Set waiting time data
+        element.attr("data-waitingTime", deltaDeparture); //deltaDeparture);
+
         // If delta is out of limits
         if(deltaDeparture < $("body").attr("data-minimumwait") || deltaDeparture == NaN)
             element.addClass("hide").removeClass("visible"); // Hide vehicle
@@ -178,9 +194,36 @@ function updateTimings(GUID) {
     }
 }
 
+function sortObjects() {
+    const container = $("#nextVehicles");
+    const divs = container.children(".vehicle");
 
-// List of registered elements
-var registeredElements = {};
+    divs.sort(function(a,b) {
+        const aTime = parseInt($(a).attr('data-waitingtime') ?? 0);
+        const bTime = parseInt($(b).attr('data-waitingtime') ?? 0);
+        return aTime - bTime;
+    });
+
+    divs.detach().appendTo(container);
+}
+
+function limitObjects(limit) {
+    const container = $("#nextVehicles");
+    const vehicles = container.children(".vehicle");
+
+    let i = 1;
+    vehicles.each(function() {
+        // If limit is null or 0, no filter
+        if(limit <= 0 || limit == null)
+            return false;
+        
+        // If i is out of limits, hide object
+        if(i > limit)
+            $(this).addClass("hide").removeClass("visible");
+        
+        i++;
+    })
+}
 
 
 function getContrastColor(hexColor) {
@@ -197,10 +240,17 @@ function getContrastColor(hexColor) {
 }
 
 
-$(document).ready(function() {
-    // Getting URL params
-    const urlParams = new URLSearchParams(window.location.search);
+// List of registered elements
+var registeredElements = {};
 
+// Initialise limit value
+let objectsLimit = 0;
+
+// Getting URL params
+const urlParams = new URLSearchParams(window.location.search);
+
+
+$(document).ready(function() {
     // Get displayID in URL
     const displayID = urlParams.get('display');
 
@@ -237,6 +287,12 @@ $(document).ready(function() {
                 updateTimings(GUID);
                 count++;
             });
+
+            // Sort objects
+            sortObjects();
+
+            // Limit objects
+            limitObjects(objectsLimit);
 
             console.log(count + " elements registered in DOM.");
         }, 5000);
