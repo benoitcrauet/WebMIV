@@ -168,6 +168,9 @@ body {
                     }
 
 @media (max-width: 1000px) {
+    #banner #stopname {
+        font-size: 25px;
+    }
 
     .vehicleWait_value {
         font-size: 160px;
@@ -179,6 +182,9 @@ body {
 }
 
 @media (max-width: 800px) {
+    #banner #stopname {
+        font-size: 24px;
+    }
 
     .vehicleWait_value {
         font-size: 120px;
@@ -190,6 +196,9 @@ body {
 }
 
 @media (max-width: 600px) {
+    #banner #stopname {
+        font-size: 20px;
+    }
 
     .vehicleWait_value {
         font-size: 80px;
