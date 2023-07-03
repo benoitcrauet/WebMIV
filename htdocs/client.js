@@ -213,6 +213,10 @@ function limitObjects(limit) {
 
     let i = 1;
     vehicles.each(function() {
+        // Limit only visible objects
+        if($(this).hasClass("invisible"))
+            return false;
+        
         // If limit is null or 0, no filter
         if(limit <= 0 || limit == null)
             return false;
