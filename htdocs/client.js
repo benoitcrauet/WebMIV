@@ -47,15 +47,24 @@ function updateElements(display) {
                         .addClass("vehicle")
                         .attr("id", travel.GUID)
                     
+                    // Adding delayed stat
+                    vehicle.attr("data-departureDelayed", false);
                     // Do we have a departure time?
-                    if(travel.departure !== null)
+                    if(travel.departure !== null) {
                         vehicle.attr("data-departureTime", travel.departure.datetime);
+                        vehicle.attr("data-departureDelayed", travel.departure.delayed);
+                    }
                     else
                         vehicle.attr("data-departureTime", null);
                 
+
+                    // Adding delayed stat
+                    vehicle.attr("data-arrivalDelayed", false);
                     // Do we have an arrival time?
-                    if(travel.arrival !== null)
+                    if(travel.arrival !== null) {
                         vehicle.attr("data-arrivalTime", travel.arrival.datetime);
+                        vehicle.attr("data-arrivalDelayed", travel.arrival.delayed);
+                    }
                     else
                         vehicle.attr("data-arrivalTime", null);
                     
