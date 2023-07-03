@@ -171,7 +171,7 @@ function updateTimings(GUID) {
     }
     else {
         // Remove element
-        $(this).remove();
+        element.remove();
 
         // Unregister element
         registeredElements[GUID] = undefined;
