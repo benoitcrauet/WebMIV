@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/benoitcrauet/webmiv/issues"
   },
-  "homepage": "https://github.com/benoitcrauet/webmiv#readme"
+  "homepage": "https://github.com/benoitcrauet/webmiv#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "ini": "^4.1.1",
+    "mime": "^3.0.0",
+    "sync-request": "^6.1.0"
+  }
 }

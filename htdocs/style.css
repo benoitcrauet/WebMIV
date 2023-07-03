@@ -1,0 +1,201 @@
+body {
+    font-family: "Trebuchet MS", "Helvetica", sans-serif;
+    font-size: 14px;
+    margin: 0px;
+    overflow: hidden;
+    background: black;
+    color: white;
+    cursor: default;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+    #banner {
+        background: white;
+        color: black;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        height: 50px;
+    }
+
+        #banner #line {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+        
+            #banner #line_logo {
+                width: 46px;
+                height: 46px;
+                margin: 2px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+            }
+            .bus        #banner #line_logo { background-image: url("./images/bus.svg"); }
+            .rer        #banner #line_logo { background-image: url("./images/rer.svg"); }
+            .tram       #banner #line_logo { background-image: url("./images/tram.svg"); }
+            .transilien #banner #line_logo { background-image: url("./images/transilien.svg"); }
+            .metro      #banner #line_logo { background-image: url("./images/metro.svg"); }
+
+            #banner #line_identifier {
+                margin: 2px;
+                width: 46px;
+                height: inherit;
+                display: block;
+            }
+            
+            #banner #line_identifier_label {
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 34px;
+                font-weight: bold;
+            }
+            .bus        #banner #line_identifier { width: auto; }
+            .bus        #banner #line_identifier_label { height: 46px; padding: 0px 12px; }
+            .rer        #banner #line_identifier { border-radius: 12px; }
+            .rer        #banner #line_identifier_label { width: inherit; height: 46px; }
+            .tram       #banner #line_identifier { width: auto; border-radius: 4px; padding: 4px 0px; }
+            .tram       #banner #line_identifier_label { height: 38px; padding: 0px 10px; background: white; color: black !important; }
+            .transilien #banner #line_identifier { border-radius: 12px; }
+            .transilien #banner #line_identifier_label { width: inherit; height: 46px; }
+            .metro      #banner #line_identifier { border-radius: 46px; }
+            .metro      #banner #line_identifier_label { width: inherit; height: 46px; }
+
+        #banner #stopname {
+            padding: 0px 12px;
+            text-align: left;
+            font-size: 28px;
+            font-weight: bold;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #banner #clock {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            height: inherit;
+            align-items: center;
+            background: black;
+            color: yellow;
+            padding: 0px 12px;
+        }
+
+            #banner #clock > * {
+                font-size: 30px;
+            }
+
+            #banner #clock_separator {
+                animation: clockSeparator linear infinite 1s;
+            }
+
+            @keyframes clockSeparator {
+                0% { opacity: 1; }
+                100% { opacity: 60%; }
+            }
+
+
+    #nextVehicles {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+
+        #nextVehicles > * {
+            flex-grow: 1;
+        }
+
+        #nextVehicles .vehicle {
+            flex-basis: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid gray;
+        }
+
+        .vehicle.visible:first-child {
+            border-left: none !important;
+        }
+
+        .vehicle.hide {
+            display: none !important;
+        }
+
+            .vehicle .vehicleTitle {
+                font-size: 36px;
+                padding: 10px 20px;
+            }
+
+            .vehicle .vehicleWait {
+                flex-grow: 1;
+                color: yellow;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+                .vehicleWait > .container {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                    align-items: baseline;
+                }
+
+                    .vehicleWait_value {
+                        font-size: 220px;
+                        font-weight: bold;
+                    }
+
+                    .vehicleWait_unit {
+                        font-size: 60px;
+                        opacity: .6;
+                    }
+
+@media (max-width: 1000px) {
+
+    .vehicleWait_value {
+        font-size: 160px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .vehicleWait_value {
+        font-size: 120px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .vehicleWait_value {
+        font-size: 80px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 20px;
+    }
+}
