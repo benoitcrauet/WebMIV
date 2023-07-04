@@ -111,12 +111,15 @@ function updateElements(display) {
                     // Adding elements to root
                     vehicle.append(title).append(wait);
 
-                    // Adding vehicle elements to list
-                    $("#nextVehicles").append(vehicle);
-                    console.log("Add new element to DOM", vehicle);
+                    // Only add vehicle if have departure
+                    if(travel.departure !== null) {
+                        // Adding vehicle elements to list
+                        $("#nextVehicles").append(vehicle);
+                        console.log("Add new element to DOM", vehicle);
 
-                    // Register
-                    registeredElements[travel.GUID] = $("#"+travel.GUID);
+                        // Register
+                        registeredElements[travel.GUID] = $("#"+travel.GUID);
+                    }
 
                 }
 
@@ -172,15 +175,38 @@ function updateTimings(GUID) {
         deltaDisplay = Math.ceil(deltaDeparture / 60);
         deltaUnit = "min";
 
-        // Update HTML element
-        $("#"+GUID + " .vehicleWait_value").text(deltaDisplay);
-        $("#"+GUID + " .vehicleWait_unit").text(deltaUnit);
+        // Get current value and unit
+        let currentObjectValue = $("#"+GUID + " .vehicleWait_value").text();
+        let currentObjectUnit = $("#"+GUID + " .vehicleWait_unit").text();
 
-        console.log("    Departure at " + dateDeparture);
-        console.log("    => in " + deltaDeparture + " sec");
+        // By default, no animation
+        let animationDuration = 0
 
-        // Set waiting time data
-        element.attr("data-waitingTime", deltaDeparture); //deltaDeparture);
+        // If new value is different...
+        if(currentObjectValue != deltaDisplay || currentObjectUnit !== deltaUnit) {
+            console.log("  New value!");
+            // Animate
+            animationDuration = 1500;
+        }
+
+        // If waiting time is "-" (object initialisation), no animation
+        if(currentObjectValue == "-") {
+            animationDuration = 0;
+        }
+
+        // Fade out
+        $("#"+GUID + " .vehicleWait").animate({
+            opacity: 0
+        }, animationDuration, "linear", function() {
+            // Update HTML element
+            $("#"+GUID + " .vehicleWait_value").text(deltaDisplay);
+            $("#"+GUID + " .vehicleWait_unit").text(deltaUnit);
+
+            // Fade in
+            $(this).animate({
+                opacity: 1
+            }, animationDuration, "linear");
+        });
 
         // If delta is out of limits
         if(deltaDeparture < $("body").attr("data-minimumwait") || deltaDeparture == NaN)
@@ -188,10 +214,18 @@ function updateTimings(GUID) {
         else
             element.removeClass("hide").addClass("visible"); // Show vehicle
 
+        console.log("    Departure at " + dateDeparture);
+        console.log("    => in " + deltaDeparture + " sec");
+
+        // Set waiting time data
+        element.attr("data-waitingTime", deltaDeparture); //deltaDeparture);
+
         // Remove and unregister element if vehicle is too old
-        if(deltaDeparture < -300) {
+        if(deltaDeparture < -100) {
             element.remove();
             registeredElements[GUID] = undefined;
+
+            console.warn("Unregister and remove GUID " + GUID);
         }
     }
     else {
@@ -200,6 +234,8 @@ function updateTimings(GUID) {
 
         // Unregister element
         registeredElements[GUID] = undefined;
+
+        console.warn("This GUID doesn't have departure informations. Remove and unregister: " + GUID)
     }
 }
 
@@ -217,25 +253,29 @@ function sortObjects() {
 }
 
 function limitObjects(limit) {
-    const container = $("#nextVehicles");
-    const vehicles = container.children(".vehicle");
+    // Limit only if limit is set to >0 and is not null
+    if(limit > 0 && limit !== null) {
+        const vehicles = document.querySelectorAll(".vehicle");
 
-    let i = 1;
-    vehicles.each(function() {
-        // Limit only visible objects
-        if($(this).hasClass("invisible"))
-            return false;
-        
-        // If limit is null or 0, no filter
-        if(limit <= 0 || limit == null)
-            return false;
-        
-        // If i is out of limits, hide object
-        if(i > limit)
-            $(this).addClass("hide").removeClass("visible");
-        
-        i++;
-    })
+        let i = 1;
+        let o = 1;
+        for(let vehicle of vehicles) {
+            // Limit only visible objects
+            if(!vehicle.classList.contains("hide")) {
+                // If i is out of limits, hide object
+                if(i > limit) {
+                    vehicle.classList.add("filtered");
+                }
+                else {
+                    vehicle.classList.remove("filtered");
+                }
+                i++;
+            }
+
+            vehicle.setAttribute("data-order", o.toString());
+            o++;
+        }
+    }
 }
 
 
@@ -287,13 +327,15 @@ $(document).ready(function() {
             document.getElementById("clock_minutes").innerText = mn;
         }, 200);
 
-        // Update elements now and auto get datas from API every minutes
+        // Update elements from API now
         updateElements(displayID);
+
+        // Get informations from API every minutes
         window.setInterval(function() {
             updateElements(displayID);
         }, 60000);
 
-        // Recalculate all elements every 5 seconds
+        // Recalculate all elements every 10 seconds
         window.setInterval(function() {
             let count = 0;
             Object.entries(registeredElements).forEach(([GUID, object]) => {
@@ -307,7 +349,21 @@ $(document).ready(function() {
             // Limit objects
             limitObjects(objectsLimit);
 
-            console.log(count + " elements registered in DOM.");
-        }, 5000);
+            console.log(document.querySelectorAll(".vehicle").length + " elements registered in DOM.");
+        }, 10000);
+
+
+
+
+        // Animate clock separator
+        window.setInterval(function() {
+            let dt = new Date();
+            if(dt.getMilliseconds() < 500) {
+                $("#clock_separator").css("opacity", 1);
+            }
+            else {
+                $("#clock_separator").css("opacity", 0.5);
+            }
+        }, 100);
     }
 });

@@ -97,13 +97,8 @@ body {
             }
 
             #banner #clock_separator {
-                animation: clockSeparator linear infinite 1s;
             }
 
-            @keyframes clockSeparator {
-                0% { opacity: 1; }
-                100% { opacity: 60%; }
-            }
 
 
     #nextVehicles {
@@ -132,6 +127,10 @@ body {
         }
 
         .vehicle.hide {
+            display: none !important;
+        }
+
+        .vehicle.filtered {
             display: none !important;
         }
 
