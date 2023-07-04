@@ -195,7 +195,7 @@ function updateTimings(GUID) {
         }
 
         // Fade out
-        $("#"+GUID + " .vehicleWait").animate({
+        $("#"+GUID + " .vehicleWait").stop().clearQueue().animate({
             opacity: 0
         }, animationDuration, "linear", function() {
             // Update HTML element
@@ -311,7 +311,7 @@ $(document).ready(function() {
     if(displayID === null || typeof displayID != "string" || displayID.trim()=="")
         document.write("Please set \"display\" GET parameter with a valid display ID.");
     else {
-        var intClock = window.setInterval(function() {
+        window.setInterval(function() {
             var dt = new Date();
 
             var hr = dt.getHours();
