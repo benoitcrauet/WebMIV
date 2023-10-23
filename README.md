@@ -45,6 +45,7 @@ Voici ce que chaque vue doit contenir comme paramètres :
 | `lineid[]` | string | Usage avancé. Permet de filtrer des lignes précises. Utile en cas de sélection d'une Zone d'Arrêt, avec plusieurs quais ou abris bus par exemple. Impossible de développer plus, les numéros de ligne dans l'API Prim sont des chaînes de caractères excessivement complexes. Si vous savez utiliser l'API Prim, ça peut vous être utile. |  |
 
 Même si vous ne définissez pas de filtre, vous devez quand même laisser les variables `direction[]` et `line[]`, sans valeur.
+
 __Important__ : lorsque vous changez la configuration, vous devez relancer l'app nodejs.
 
 ## Utilisation de WebMIV
