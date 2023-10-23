@@ -46,7 +46,7 @@ Voici ce que chaque vue doit contenir comme paramètres :
 
 Même si vous ne définissez pas de filtre, vous devez quand même laisser les variables `direction[]` et `line[]`, sans valeur.
 
-__Important__ : lorsque vous changez la configuration, vous devez relancer l'app nodejs.
+__Important : lorsque vous changez la configuration, vous devez relancer WebMIV.__
 
 ## Utilisation de WebMIV
 Assurez-vous d'abord d'avoir bien installé Node.js.
