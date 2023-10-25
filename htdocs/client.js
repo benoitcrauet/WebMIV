@@ -9,7 +9,9 @@ const logMaxEntries = 10; // Maximum number of logs entries
 
 let traceMode = true; // Trace mode on or off
 
-const consoleIntro = "Welcome to debug console!\nYou can use the following commands:\n\n- displayLogResponse(): Print the 10 last JSON responses\n- displayLogElements(): Print the 10 last DOM elements\n\ntraceMode = true/false; to enable or disable trace mode.";
+let pauseRefresh = false; // Pause refresh mode on or off
+
+const consoleIntro = "Welcome to debug console!\nYou can use the following commands:\n\n### DEBUG FUNCTIONS ###\n- displayLogResponse(): Print the 10 last JSON responses\n- displayLogElements(): Print the 10 last DOM elements\n\n### DEBUG VARIABLES ###\n- traceMode = true/false; to enable or disable trace mode.\n- pauseRefresh = true/false; to enable or disable auto refresh.";
 
 /**
  * Add object to log
@@ -68,6 +70,9 @@ function displayLogElements() {
 
 
 function updateElements(display) {
+    if(pauseRefresh)
+        return false;
+
     $.ajax({
         url: "/generated/hours",
         method: "GET",
@@ -203,10 +208,10 @@ function updateElements(display) {
     
                 // Limit objects
                 limitObjects(objectsLimit);
-
-                // Log elements
-                addToLog(registeredElements, logType.elements);
             });
+
+            // Log elements
+            addToLog(registeredElements, logType.elements);
 
         },
         error: function(err) {
@@ -217,6 +222,9 @@ function updateElements(display) {
 
 
 function updateTimings(GUID) {
+    if(pauseRefresh)
+        return false;
+
     let element = $("#" + GUID);
 
     if(element === undefined || element === null) {
@@ -315,6 +323,9 @@ function updateTimings(GUID) {
 }
 
 function sortObjects() {
+    if(pauseRefresh)
+        return false;
+
     const container = $("#nextVehicles");
     const divs = container.children(".vehicle");
 
@@ -328,6 +339,9 @@ function sortObjects() {
 }
 
 function limitObjects(limit) {
+    if(pauseRefresh)
+        return false;
+
     // Limit only if limit is set to >0 and is not null
     if(limit > 0 && limit !== null) {
         const vehicles = document.querySelectorAll(".vehicle");
@@ -444,20 +458,7 @@ $(document).ready(function() {
 });
 
 
-
-
-
-// Vérification de l'activité de la console
-function checkConsole() {
-    if ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || 
-        window.outerWidth - window.innerWidth > 200 || 
-        window.outerHeight - window.innerHeight > 200) {
-        // Actions à entreprendre si la console est ouverte
-        if(traceMode) console.log('La console est ouverte.');
-    }
-}
-
-// Check console every 500 milliseconds
+// Check console status every 500 milliseconds
 let lastOpened = false;
 setInterval(function() {
     let opened = (window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || 
