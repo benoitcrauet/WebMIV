@@ -130,6 +130,10 @@ exports.hours = function(request, params) {
                         let journeyName = null;
                         if(monitoredVehicleJourney.JourneyNote[0] !== undefined)
                             journeyName = monitoredVehicleJourney.JourneyNote[0].value ?? "";
+
+                        let lineRef = null;
+                        if(monitoredVehicleJourney.LineRef !== undefined)
+                            lineRef = monitoredVehicleJourney.LineRef.value ?? "";
                         
                         let journeyNameVehicle = null;
                         if(monitoredVehicleJourney.VehicleJourneyName[0] !== undefined)
@@ -154,7 +158,8 @@ exports.hours = function(request, params) {
                             destinationName: destinationName,
                             directionName: directionName,
                             journeyName: journeyName,
-                            journeyNameVehicle: journeyNameVehicle
+                            journeyNameVehicle: journeyNameVehicle,
+                            lineRef: lineRef
                         };
         
                         if(departureDatetimeString === null)

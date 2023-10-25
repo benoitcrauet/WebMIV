@@ -11,7 +11,45 @@ let traceMode = true; // Trace mode on or off
 
 let pauseRefresh = false; // Pause refresh mode on or off
 
-const consoleIntro = "Welcome to debug console!\nYou can use the following commands:\n\n### DEBUG FUNCTIONS ###\n- displayLogResponse(): Print the 10 last JSON responses\n- displayLogElements(): Print the 10 last DOM elements\n\n### DEBUG VARIABLES ###\n- traceMode = true/false; to enable or disable trace mode.\n- pauseRefresh = true/false; to enable or disable auto refresh.";
+/**
+ * Display console help message.
+ */
+function help() {
+    console.log(`%cWelcome to debug console!
+%cYou can use the following commands:
+
+%c### FILTERS FUNCTIONS ###%c
+- displayLines(): Display all known lines for this display.
+- displayDirections(): Display all known directions for this display.
+- displayDestinations(): Display all known destinations for this display.
+
+%c### DEBUG FUNCTIONS ###%c
+- displayLogResponse(): Print the 10 last JSON responses.
+- displayLogElements(): Print the 10 last DOM elements.
+
+%c### HELP FUNCTIONS ###%c
+- help(): Display this help message.
+
+%c### DEBUG VARIABLES ###%c
+- traceMode = true/false; to enable or disable trace mode (current: ${traceMode})
+- pauseRefresh = true/false; to enable or disable auto refresh (current: ${pauseRefresh}).`,
+    'font-weight: bold',
+    'font-weight: normal',
+    'font-weight: bold',
+    'font-weight: normal',
+    'font-weight: bold',
+    'font-weight: normal',
+    'font-weight: bold',
+    'font-weight: normal',
+    'font-weight: bold',
+    'font-weight: normal');
+}
+
+
+
+let destinationsList = {};
+let directionsList = {};
+let linesList = {};
 
 /**
  * Add object to log
@@ -40,6 +78,63 @@ function addToLog(object, type)
     return true;
 }
 
+
+/**
+ * Auto disable trace mode
+ */
+function disableTraceMode() {
+    if(traceMode) {
+        traceMode = false;
+        console.warn("Trace mode is now disabled. You can enable it again with the following command:\ntraceMode = true;");
+    }
+}
+
+
+/**
+ * Print all found lineRefs
+ */
+function displayLines() {
+    disableTraceMode();
+
+    console.log("------------------------------------------------------------------------");
+    console.log("### LIST OF KNOWN LINES: ###\n");
+    for(let line in linesList) {
+        console.log(line);
+    };
+    console.log("------------------------------------------------------------------------");
+}
+
+
+/**
+ * Print all found directionNames
+ */
+function displayDirections() {
+    disableTraceMode();
+
+    console.log("------------------------------------------------------------------------");
+    console.log("### LIST OF KNOWN DIRECTIONS: ###\n");
+    for(let direction in directionsList) {
+        console.log(direction);
+    };
+    console.log("------------------------------------------------------------------------");
+}
+
+
+/**
+ * Print all found destinationNames
+ */
+function displayDestinations() {
+    disableTraceMode();
+
+    console.log("------------------------------------------------------------------------");
+    console.log("### LIST OF KNOWN DESTINATIONS: ###\n");
+    for(let destination in destinationsList) {
+        console.log(destination);
+    };
+    console.log("------------------------------------------------------------------------");
+}
+
+
 /**
  * Print the 10 last responses
  */
@@ -48,11 +143,9 @@ function displayLogResponse() {
         console.log(response.datetime.toString(), response.object);
     });
 
-    if(traceMode) {
-        traceMode = false;
-        console.log("Trace mode is now disabled. You can enable it again with the following command:\ntraceMode = true;");
-    }
+    disableTraceMode();
 }
+
 
 /**
  * Print the 10 last data entries
@@ -62,10 +155,7 @@ function displayLogElements() {
         console.log(response.datetime.toString(), response.object);
     });
 
-    if(traceMode) {
-        traceMode = false;
-        console.log("Trace mode is now disabled. You can enable it again with the following command:\ntraceMode = true;");
-    }
+    disableTraceMode();
 }
 
 
@@ -97,6 +187,13 @@ function updateElements(display) {
 
             // List all travels
             response.vehicles.forEach(travel => {
+                // Storing lineRef
+                linesList[travel.lineRef] = travel.lineRef;
+                // Storing directionName
+                directionsList[travel.directionName] = travel.directionName;
+                // Storing destinationName
+                destinationsList[travel.destinationName] = travel.destinationName;
+
                 // Do we have a GUID existing?
                 if(document.getElementById(travel.GUID) !== null) {
                     // Already exists! Just update the travel elements
@@ -469,7 +566,7 @@ setInterval(function() {
         lastOpened = opened;
 
         if(opened) {
-            if(traceMode) console.log(consoleIntro);
+            help(); // Display console help message
         }
     }
 }, 500);
