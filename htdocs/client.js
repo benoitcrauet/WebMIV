@@ -1,9 +1,81 @@
+let logResponse = [];
+let logElements = [];
+const logType = {
+    response: 1,
+    elements: 2
+};
+
+const logMaxEntries = 10; // Maximum number of logs entries
+
+let traceMode = true; // Trace mode on or off
+
+const consoleIntro = "Welcome to debug console!\nYou can use the following commands:\n\n- displayLogResponse(): Print the 10 last JSON responses\n- displayLogElements(): Print the 10 last DOM elements\n\ntraceMode = true/false; to enable or disable trace mode.";
+
+/**
+ * Add object to log
+ * @param {object} object Object to log
+ * @param {integer} type Type of log
+ */
+function addToLog(object, type)
+{
+    let logObj;
+    if(type == logType.response)
+        logObj = logResponse;
+    else if(type == logType.elements)
+        logObj = logElements;
+    else
+        return false;
+
+    let insertedObject = {
+        datetime: new Date(),
+        object: object
+    };
+
+    logObj.push(insertedObject);
+    if(logObj.length > logMaxEntries)
+        logObj.shift();
+
+    return true;
+}
+
+/**
+ * Print the 10 last responses
+ */
+function displayLogResponse() {
+    logResponse.forEach(response => {
+        console.log(response.datetime.toString(), response.object);
+    });
+
+    if(traceMode) {
+        traceMode = false;
+        console.log("Trace mode is now disabled. You can enable it again with the following command:\ntraceMode = true;");
+    }
+}
+
+/**
+ * Print the 10 last data entries
+ */
+function displayLogElements() {
+    logElements.forEach(response => {
+        console.log(response.datetime.toString(), response.object);
+    });
+
+    if(traceMode) {
+        traceMode = false;
+        console.log("Trace mode is now disabled. You can enable it again with the following command:\ntraceMode = true;");
+    }
+}
+
+
 function updateElements(display) {
     $.ajax({
         url: "/generated/hours",
         method: "GET",
         data: { display: display },
         success: function(response) {
+            // Logging response
+            addToLog(response, logType.response);
+
             // Set display
             $("body").addClass(response.linetype);
             $("#line_identifier_label").text(response.linenumber);
@@ -23,7 +95,7 @@ function updateElements(display) {
                 // Do we have a GUID existing?
                 if(document.getElementById(travel.GUID) !== null) {
                     // Already exists! Just update the travel elements
-                    console.log(travel.GUID + " already exists");
+                    if(traceMode) console.log(travel.GUID + " already exists");
 
                     var arrivalDatetime = null;
                     var departureDatetime = null;
@@ -115,7 +187,7 @@ function updateElements(display) {
                     if(travel.departure !== null) {
                         // Adding vehicle elements to list
                         $("#nextVehicles").append(vehicle);
-                        console.log("Add new element to DOM", vehicle);
+                        if(traceMode) console.log("Add new element to DOM", vehicle);
 
                         // Register
                         registeredElements[travel.GUID] = $("#"+travel.GUID);
@@ -131,6 +203,9 @@ function updateElements(display) {
     
                 // Limit objects
                 limitObjects(objectsLimit);
+
+                // Log elements
+                addToLog(registeredElements, logType.elements);
             });
 
         },
@@ -149,7 +224,7 @@ function updateTimings(GUID) {
         return false;
     }
     
-    console.log("Updating GUID "+GUID+"...");
+    if(traceMode) console.log("Updating GUID "+GUID+"...");
     
     // Do we have a departure and/or arrival?
     var haveArrival = element.data("arrivalTime") !== null;
@@ -184,7 +259,7 @@ function updateTimings(GUID) {
 
         // If new value is different...
         if(currentObjectValue != deltaDisplay || currentObjectUnit !== deltaUnit) {
-            console.log("  New value!");
+            if(traceMode) console.log("  New value!");
             // Animate
             animationDuration = 1500;
         }
@@ -214,8 +289,8 @@ function updateTimings(GUID) {
         else
             element.removeClass("hide").addClass("visible"); // Show vehicle
 
-        console.log("    Departure at " + dateDeparture);
-        console.log("    => in " + deltaDeparture + " sec");
+        if(traceMode) console.log("    Departure at " + dateDeparture);
+        if(traceMode) console.log("    => in " + deltaDeparture + " sec");
 
         // Set waiting time data
         element.attr("data-waitingTime", deltaDeparture); //deltaDeparture);
@@ -349,7 +424,7 @@ $(document).ready(function() {
             // Limit objects
             limitObjects(objectsLimit);
 
-            console.log(document.querySelectorAll(".vehicle").length + " elements registered in DOM.");
+            if(traceMode) console.log(document.querySelectorAll(".vehicle").length + " elements registered in DOM.");
         }, 10000);
 
 
@@ -367,3 +442,33 @@ $(document).ready(function() {
         }, 100);
     }
 });
+
+
+
+
+
+// Vérification de l'activité de la console
+function checkConsole() {
+    if ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || 
+        window.outerWidth - window.innerWidth > 200 || 
+        window.outerHeight - window.innerHeight > 200) {
+        // Actions à entreprendre si la console est ouverte
+        if(traceMode) console.log('La console est ouverte.');
+    }
+}
+
+// Check console every 500 milliseconds
+let lastOpened = false;
+setInterval(function() {
+    let opened = (window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || 
+                  window.outerWidth - window.innerWidth > 200 || 
+                  window.outerHeight - window.innerHeight > 200;
+    
+    if(opened != lastOpened) {
+        lastOpened = opened;
+
+        if(opened) {
+            if(traceMode) console.log(consoleIntro);
+        }
+    }
+}, 500);
