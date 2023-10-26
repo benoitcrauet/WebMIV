@@ -60,18 +60,31 @@ exports.hours = function(request, params) {
         let deliveries = response.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit;
 
         // Transform lineid array to compatible values
-        var filterLines = [];
-        display.lineid.forEach((value, key) => {
-            if(typeof value == "string")
-                filterLines.push("STIF:Line::"+value+":");
-        });
+        let filterLines = [];
+        if(display.filterLine!== undefined) {
+            display.filterLine.forEach((value, key) => {
+                if(typeof value == "string")
+                    filterLines.push(value);
+            });
+        }
 
         // Transform direction array to compatible values
-        var filterDirection = [];
-        display.direction.forEach((value, key) => {
-            if(typeof value == "string")
-                filterDirection.push(value);
-        });
+        let filterDirections = [];
+        if(display.filterDirection!== undefined) {
+            display.filterDirection.forEach((value, key) => {
+                if(typeof value == "string")
+                    filterDirections.push(value);
+            });
+        }
+
+        // Transform destinations array to compatible values
+        let filterDestinations = [];
+        if(display.filterDestination!== undefined) {
+            display.filterDestination.forEach((value, key) => {
+                if(typeof value == "string")
+                    filterDestinations.push(value);
+            });
+        }
 
         if(deliveries !== undefined) {
             // Initialize list of travels
@@ -79,12 +92,17 @@ exports.hours = function(request, params) {
 
             deliveries.forEach(delivery => {
                 // Is the good way?
-                if(!filterDirection.includes(delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "") && filterDirection.length>0) {
+                if(!filterDirections.includes(delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "") && filterDirections.length>0) {
                     return false;
                 }
 
                 // Is the good line?
                 if(!filterLines.includes(delivery.MonitoredVehicleJourney.LineRef.value ?? "") && filterLines.length>0) {
+                    return false;
+                }
+
+                // Is the good destination?
+                if(!filterDestinations.includes(delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0].value ?? "") && filterDestinations.length>0) {
                     return false;
                 }
 
@@ -134,6 +152,10 @@ exports.hours = function(request, params) {
                         let lineRef = null;
                         if(monitoredVehicleJourney.LineRef !== undefined)
                             lineRef = monitoredVehicleJourney.LineRef.value ?? "";
+
+                        let destinationRef = null;
+                        if(monitoredVehicleJourney.DestinationRef !== undefined)
+                            destinationRef = monitoredVehicleJourney.DestinationRef.value ?? "";
                         
                         let journeyNameVehicle = null;
                         if(monitoredVehicleJourney.VehicleJourneyName[0] !== undefined)
@@ -157,9 +179,10 @@ exports.hours = function(request, params) {
                             vehicleAtStop: vehicleAtStop,
                             destinationName: destinationName,
                             directionName: directionName,
+                            lineRef: lineRef,
+                            destinationRef: destinationRef,
                             journeyName: journeyName,
-                            journeyNameVehicle: journeyNameVehicle,
-                            lineRef: lineRef
+                            journeyNameVehicle: journeyNameVehicle
                         };
         
                         if(departureDatetimeString === null)

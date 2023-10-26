@@ -41,10 +41,32 @@ Voici ce que chaque vue doit contenir comme paramètres :
 | `limit` | integer | Nombre maximal de trajets à afficher. 0 pour aucune limite. | `3` pour afficher maximum 3 trains. |
 | `displayname` | string | Nom complet de la vue, affiché dans le bandeau blanc en haut de l'interface. | `Val d'Europe - Direction Chessy` |
 | `stationid` | integer | ID de l'Arrêt __OU__ de la Zone d'Arrêt. Un arrêt défini un quai, ou un abri de bus précis, tandis qu'une Zone d'Arrêt défini un arrêt, avec l'ensemble de ses quais ou abris. Pour récupérer les ID des Arrêts ou des Zones d'Arrêts, allez sur [la page dédiée sur IDFM Prim](https://data.iledefrance-mobilites.fr/explore/dataset/arrets-transporteur/custom/?disjunctive.fournisseurname). | `474003` pour le quai RER A de Val d'Europe, direction Chessy. |
-| `direction[]` | string | Usage avancé. Permet de filtrer des directions précises. Impossible de développer plus, les directions dans l'API Prim sont très dépendantes des lignes et des exploitants, c'est assez inégal. Si vous savez utiliser l'API Prim, ça peut vous être utile. | Dépendant de la ligne/exploitant |
-| `lineid[]` | string | Usage avancé. Permet de filtrer des lignes précises. Utile en cas de sélection d'une Zone d'Arrêt, avec plusieurs quais ou abris bus par exemple. Impossible de développer plus, les numéros de ligne dans l'API Prim sont des chaînes de caractères excessivement complexes. Si vous savez utiliser l'API Prim, ça peut vous être utile. |  |
 
-Même si vous ne définissez pas de filtre, vous devez quand même laisser les variables `direction[]` et `line[]`, sans valeur.
+### Gestion des filtres de vue
+
+Chaque vue dispose également de variables de filtres.
+Ces filtres permettent d'affiner l'affichage des trajets en cas, par exemple, de l'affichage d'un point d'arrêt majeur comportant plusieurs lignes et destinations.
+
+Pour connaître les valeurs à entrer dans ces filtres, rendez-vous dans la page web de votre vue, et ouvrez la console JavaScript avec la touche `F12` ou `Cmd+Alt+I` sur macOS, et entrez une des commandes suivantes :
+- `displayLines()` pour afficher toutes les lignes connues par l'afficheur
+- `displayDirections()` pour afficher toutes les directions connues par l'afficheur
+- `displayDestinations()` pour afficher toutes les destinations connues par l'afficheur
+
+__Attention__ : il est possible qu'en fonction de l'heure, toutes les directions, destinations ou lignes ne s'affichent pas. La console n'affiche que les données rencontrées depuis le rechargement de la page.
+=> ___Je vous conseille de soit laisser la page tourner un petit moment avant de lancer la commande, soit faire cette opération en heure de pointe afin d'être certain que le système puisse avoir l'occasion de capturer toutes les datas possibles.___
+
+Une fois que vous avez vos données de lignes, directions et/ou destinations, il vous suffit de copier/coller la ou les valeur(s) depuis la console directement dans votre fichier `settings.ini` dans les variables suivantes :
+
+| Paramètre | Type | Decription |
+|--|--|--|
+| `filterDestination[]` | string | Permet de filtrer une __destination__. La destination correspond au terminus du trajet. |
+| `filterDirection[]` | string | Permet de filtrer une __direction__. Différent de la destination, la direction va plutôt donner un sens global. |
+| `filterLine[]` | string | Inscrire le string __COMPLET__ de la référence de ligne. Les identifiants de référence de ligne IDFM peuvent être étranges, mais une valeur `STIF:Line::C00632:` est tout à fait valable. |
+
+Même si vous ne définissez pas de filtre, vous devez quand même laisser les variables `filterDestination[]`, `filterDirection[]` et `filterLine[]`, sans valeur.
+À partir moment où un filtre est défini, l'afficheur n'affichera __QUE__ les lignes, directions ou destinations désignées.
+__Les filtres agissent comme une whitelist.__
+En l'absence de filtres définis, l'afficheur affichera tous les trajets, sans condition.
 
 __Important : lorsque vous changez la configuration, vous devez relancer WebMIV.__
 
