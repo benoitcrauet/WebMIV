@@ -184,6 +184,10 @@ body {
             padding: 0px 12px;
         }
 
+            .hideclock #clock {
+                display: none !important;
+            }
+
             #banner #clock > * {
                 font-size: 30px;
             }
@@ -206,7 +210,7 @@ body {
         }
 
         #nextVehicles .vehicle {
-            transition: background-color .5s;
+            transition: background-color .3s;
             flex-basis: 0;
             flex-grow: 1;
             display: flex;
@@ -234,7 +238,7 @@ body {
             }
 
             .vehicle .vehicleWait {
-                transition: color .5s;
+                transition: color .3s;
                 flex-grow: 1;
                 color: yellow;
                 display: flex;

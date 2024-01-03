@@ -181,6 +181,16 @@ function updateElements(display) {
             });
             $("body").attr("data-minimumwait", response.minimumwait);
 
+
+            let displayClock = true;
+            if(urlParams.get("displayclock") != null)
+                displayClock = urlParams.get("displayclock") == "1";
+            else
+                displayClock = response.displayclock == true;
+
+            if(!displayClock)
+                $("body").addClass("hideclock");
+            
             // Storing limit
             objectsLimit = urlParams.get("limit")==null ? response.limit ?? 0 : parseInt(urlParams.get("limit"));
 
@@ -220,9 +230,9 @@ function updateElements(display) {
                     var vehicle = $("<div>")
                         .addClass("vehicle")
                         .attr("id", travel.GUID)
-                        .on("click", function(element) {
-                            toggleTrainFollow(display, element.currentTarget.id)
-                            updateFollow(display);
+                        .on("click touchstart", function(element) {
+                            toggleVehicleFollow(element.currentTarget.id)
+                            updateFollow();
                         })
                     
                     // Adding delayed stat
@@ -311,11 +321,11 @@ function updateElements(display) {
                 limitObjects(objectsLimit);
             });
 
+            // Update follow display
+            updateFollow();
+
             // Log elements
             addToLog(registeredElements, logType.elements);
-
-            // Update follow display
-            updateFollow(display);
 
         },
         error: function(err) {
@@ -486,6 +496,50 @@ function getContrastColor(hexColor) {
 }
 
 
+// Toggle vehicle follow
+function toggleVehicleFollow(guid) {
+    let currentFollowState = (localStorage.getItem("follow") == guid);
+
+    if(currentFollowState)
+        localStorage.setItem("follow", "");
+    else
+        localStorage.setItem("follow", guid);
+
+    return !currentFollowState;
+}
+
+
+// Update follow display
+function updateFollow() {
+    let currentFollowGUID = localStorage.getItem("follow") ?? "";
+    let currentFollowGUIDFound = false;
+
+    if(currentFollowGUID != null)
+        console.log("[TRACK] Currently tracked vehicle GUID: " + currentFollowGUID + "...");
+    else
+        console.log("[TRACK] Currently no vehicle are being tracked.");
+    
+    // List of vehicles in DOM
+    $("#nextVehicles > .vehicle").each(function() {
+        let followState = currentFollowGUID != "" && $(this).attr("id") == currentFollowGUID;
+
+        if(followState) {
+            $(this).addClass("follow");
+            currentFollowGUIDFound = true;
+        }
+        else
+            $(this).removeClass("follow");
+    });
+
+    if(currentFollowGUIDFound)
+        console.log("[TRACK] Vehicle found! Highlighted.");
+    else
+        console.log("[TRACK] Vehicle not found here.");
+
+
+}
+
+
 // List of registered elements
 var registeredElements = {};
 
@@ -546,6 +600,10 @@ $(document).ready(function() {
         }, 10000);
 
 
+        // Update follow mode on storage changes
+        window.addEventListener("storage", function(e) {
+            updateFollow();
+        });
 
 
         // Animate clock separator
@@ -557,7 +615,7 @@ $(document).ready(function() {
             else {
                 $("#clock_separator").css("opacity", 0.5);
             }
-        }, 100);
+        }, 50);
     }
 });
 
@@ -577,34 +635,3 @@ setInterval(function() {
         }
     }
 }, 500);
-
-
-// Toggle train follow
-function toggleTrainFollow(display, guid) {
-    let currentFollowState = (localStorage.getItem("follow_" + display) == guid);
-
-    if(currentFollowState)
-        localStorage.setItem("follow_" + display, "");
-    else
-        localStorage.setItem("follow_" + display, guid);
-
-    return !currentFollowState;
-}
-
-
-// Update follow display
-function updateFollow(display) {
-    let currentFollowGUID = localStorage.getItem("follow_" + display) ?? "";
-
-    console.log("Current followed vehicle GUID: " + currentFollowGUID);
-    
-    // List of vehicles in DOM
-    $("#nextVehicles > .vehicle").each(function() {
-        let followState = currentFollowGUID != "" && $(this).attr("id") == currentFollowGUID;
-
-        if(followState)
-            $(this).addClass("follow");
-        else
-            $(this).removeClass("follow");
-    });
-}

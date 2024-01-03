@@ -203,6 +203,7 @@ exports.hours = function(request, params) {
                 linecolor: display.linecolor ?? "000000",
                 displayname: display.displayname ?? "",
                 minimumwait: display.minimumwait ?? 0,
+                displayclock: display.displayclock ?? true,
                 limit: display.limit ?? 0,
 
                 vehicles: vehicles
