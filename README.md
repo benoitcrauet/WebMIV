@@ -64,6 +64,31 @@ node .
 
 Comme pour tous les autres programmes dans le terminal, vous pouvez stopper WebMIV avec un `Ctrl+C`, ou `^C`.
 
+## Mise à jour de WebMIV
+Si cette application évolue, la propagation des nouvelles versions n'est pas automatique.
+Vous devez alors faire une mise à jour manuelle du paquet WebMIV.
+
+💡 Pensez d'abord à stopper WebMIV, soit avec `Ctrl+C`, soit en stoppant le service (si vous l'avez configuré comme tel).
+
+Positionnez-vous dans le répertoire d'éxécution de WebMIV :
+```bash
+cd /home/Me/apps/WebMIV # Par exemple. Adaptez à votre configuration
+```
+
+La mise à jour se fait en une seule commande :
+```bash
+git pull
+```
+Le fichier `settings.sample.ini` réapparaîtra : c'est normal. Supprimez-le.
+
+Enfin, relancez WebMIV sous sa nouvelle version :
+```bash
+node .
+```
+
+⚠️ __ATTENTION__ : Il est possible qu'une réadaptation du fichier `settings.ini` soit nécessaire, par exemple en cas d'ajout ou de modification de fonctionnalités.
+Auquel cas, assurez-vous que votre fichier `settings.ini` réponde bien aux directives de ce README avant de lancer WebMIV.
+
 ## Les pré-requis
 Vous aurez besoin d'un accès personnel à l'API Prim mise à disposition par **Île-de-France Mobilités**.
 C'est une plateforme permettant aux logiciels tiers comme WebMIV de récupérer les données des transports franciliens.
@@ -183,3 +208,48 @@ Admettons, vous avez repéré un train qui serait idéal pour votre sortie, mais
 Pour désactiver le suivi d'un véhicule, re-cliquez tout simplement dessus.
 
 > Voilà ! Vous n'avez maintenant plus d'excuse pour rater votre train. 🤓🚈
+
+# Annexe 1 : intégration de la fonte "Parisine"
+Si vous souhaitez que WebMIV s'affiche avec la fonte ___Parisine___ (la fonte officielle RATP), c'est possible !
+Mais sachez cependant que la fonte Parisine est payante et sous licence.
+
+Si vous avez acheté la fonte Parisine, vous pouvez placer vous-même les fichiers dans le répertoire suivant :
+```
+htdocs/font/
+```
+WebMIV est configuré pour afficher cette typographie si ses fichiers se trouvent dans ce répertoire.
+
+Vous devrez placer 4 variantes :
+- Parisine Regular
+- Parisine Bold
+- Parisine Italic
+- Parisine Bold Italic
+
+Vous devrez également la convertir en 4 formats différents :
+- eot
+- ttf
+- woff
+- woff2
+
+Voici la liste des fichiers requis :
+- `htdocs/font/Parisine-Bold.eot`
+- `htdocs/font/Parisine-Bold.ttf`
+- `htdocs/font/Parisine-Bold.woff`
+- `htdocs/font/Parisine-Bold.woff2`
+- `htdocs/font/Parisine-BoldItalic.eot`
+- `htdocs/font/Parisine-BoldItalic.ttf`
+- `htdocs/font/Parisine-BoldItalic.woff`
+- `htdocs/font/Parisine-BoldItalic.woff2`
+- `htdocs/font/Parisine-Italic.eot`
+- `htdocs/font/Parisine-Italic.ttf`
+- `htdocs/font/Parisine-Italic.woff`
+- `htdocs/font/Parisine-Italic.woff2`
+- `htdocs/font/Parisine-Regular.eot`
+- `htdocs/font/Parisine-Regular.ttf`
+- `htdocs/font/Parisine-Regular.woff`
+- `htdocs/font/Parisine-Regular.woff2`
+
+En l'absence de cette fonte, pas de panique, des polices de substitution similaires seront appelées (si elles sont installées sur votre système) :
+- Trebuchet MS
+- Helvetica
+- Une autre fonte installée sans empattement
