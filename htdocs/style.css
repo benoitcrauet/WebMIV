@@ -206,6 +206,7 @@ body {
         }
 
         #nextVehicles .vehicle {
+            transition: background-color .5s;
             flex-basis: 0;
             flex-grow: 1;
             display: flex;
@@ -233,6 +234,7 @@ body {
             }
 
             .vehicle .vehicleWait {
+                transition: color .5s;
                 flex-grow: 1;
                 color: yellow;
                 display: flex;
@@ -258,6 +260,14 @@ body {
                         font-size: 50px;
                         opacity: .6;
                     }
+
+        .vehicle.follow {
+            background-color: yellow !important;
+        }
+
+            .vehicle.follow .vehicleWait {
+                color: black !important;
+            }
 
 @media (max-width: 1200px) {
     .vehicleWait_value {

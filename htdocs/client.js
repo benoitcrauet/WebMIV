@@ -220,6 +220,10 @@ function updateElements(display) {
                     var vehicle = $("<div>")
                         .addClass("vehicle")
                         .attr("id", travel.GUID)
+                        .on("click", function(element) {
+                            toggleTrainFollow(display, element.currentTarget.id)
+                            updateFollow(display);
+                        })
                     
                     // Adding delayed stat
                     vehicle.attr("data-departureDelayed", false);
@@ -309,6 +313,9 @@ function updateElements(display) {
 
             // Log elements
             addToLog(registeredElements, logType.elements);
+
+            // Update follow display
+            updateFollow(display);
 
         },
         error: function(err) {
@@ -570,3 +577,34 @@ setInterval(function() {
         }
     }
 }, 500);
+
+
+// Toggle train follow
+function toggleTrainFollow(display, guid) {
+    let currentFollowState = (localStorage.getItem("follow_" + display) == guid);
+
+    if(currentFollowState)
+        localStorage.setItem("follow_" + display, "");
+    else
+        localStorage.setItem("follow_" + display, guid);
+
+    return !currentFollowState;
+}
+
+
+// Update follow display
+function updateFollow(display) {
+    let currentFollowGUID = localStorage.getItem("follow_" + display) ?? "";
+
+    console.log("Current followed vehicle GUID: " + currentFollowGUID);
+    
+    // List of vehicles in DOM
+    $("#nextVehicles > .vehicle").each(function() {
+        let followState = currentFollowGUID != "" && $(this).attr("id") == currentFollowGUID;
+
+        if(followState)
+            $(this).addClass("follow");
+        else
+            $(this).removeClass("follow");
+    });
+}
