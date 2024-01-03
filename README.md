@@ -1,7 +1,15 @@
 # WebMIV
+
 Félicitations pour l'acquisition de votre superbe copie de __WebMIV__ ! 🎉
 
-__WebMIV__ est un logiciel libre développé par _Benoît Crauet_ et distribué gratuitement. Il permet l'affichage des 🚆 trains, 🚇 métros, 🚃 trams et 🚎 bus de vos lignes IDFM favorites (ou détestées, ça, c'est vous qui voyez).
+Ce projet est directement inspiré de l'application pour Android [My-MIV](https://github.com/Florian1548/My-MIV) _(allez donc y faire un tour !)_ développée par [Florian1548](https://github.com/Florian1548).
+
+__WebMIV__ avait été créé à l'origine pour répondre à un besoin personnel consistant à avoir cette même interface, mais en version web, afin de pouvoir l'intégrer à Home Assistant.
+Merci à Florian d'autoriser la publication de ce projet fortement inspiré du sien !
+
+## Introduction
+
+__WebMIV__ est un logiciel libre sous licence AGPL-3.0 développé par [_Benoît Crauet_](https://github.com/benoitcrauet) et distribué gratuitement. Il permet l'affichage des 🚆 trains, 🚇 métros, 🚃 trams et 🚎 bus de vos lignes IDFM favorites (ou détestées, ça, c'est vous qui voyez).
 
 __WebMIV__ a été spécifiquement conçu pour être facilement intégrable puisqu'il repose intégralement sur la technologie Web.
 Vous pouvez par exemple l'afficher sur :
@@ -10,8 +18,9 @@ Vous pouvez par exemple l'afficher sur :
 - Un ordinateur (Linux, macOS, Windows)
 - Un Raspberry Pi (ou équivalents)
 - Un système de digital signage
+- ...et plus globalement tout ce qui permet d'afficher une page web !
 
-💡 __WebMIV__ étant une page web, il s'intègre également parfaitement en tant que web card dans un dashboard ___Home Assistant___. C'est même l'impulsion d'origine du projet : pouvoir intégrer proprement sur une tablette fixée au mur, au beau milieu d'un dashboard _Home Assistant_, les prochains trains et bus d'un ou plusieurs arrêts.
+💡 __WebMIV__ s'intègre également parfaitement en tant que web card dans un dashboard ___Home Assistant___. C'est même l'impulsion d'origine du projet : pouvoir intégrer proprement sur une tablette fixée au mur, au beau milieu d'un dashboard _Home Assistant_, les prochains trains et bus d'un ou plusieurs arrêts.
 
 Le projet fonctionne avec un principe de client-serveur. Vous pouvez l'installer sur n'importe quel système prenant en charge Node et Git (Windows, Linux, Mac, Raspberry, machine virtuelle...).
 Les clients, eux, n'ont besoin que d'un simple navigateur web.
@@ -209,47 +218,8 @@ Pour désactiver le suivi d'un véhicule, re-cliquez tout simplement dessus.
 
 > Voilà ! Vous n'avez maintenant plus d'excuse pour rater votre train. 🤓🚈
 
-# Annexe 1 : intégration de la fonte "Parisine"
+# Annexe : intégration de la fonte "Parisine"
 Si vous souhaitez que WebMIV s'affiche avec la fonte ___Parisine___ (la fonte officielle RATP), c'est possible !
-Mais sachez cependant que la fonte Parisine est payante et sous licence.
+Mais sachez cependant que la fonte Parisine est payante et sous licence et vous devrez vous la procurer légalement pour pouvoir l'intégrer à votre copie de __WebMIV__.
 
-Si vous avez acheté la fonte Parisine, vous pouvez placer vous-même les fichiers dans le répertoire suivant :
-```
-htdocs/font/
-```
-WebMIV est configuré pour afficher cette typographie si ses fichiers se trouvent dans ce répertoire.
-
-Vous devrez placer 4 variantes :
-- Parisine Regular
-- Parisine Bold
-- Parisine Italic
-- Parisine Bold Italic
-
-Vous devrez également la convertir en 4 formats différents :
-- eot
-- ttf
-- woff
-- woff2
-
-Voici la liste des fichiers requis :
-- `htdocs/font/Parisine-Bold.eot`
-- `htdocs/font/Parisine-Bold.ttf`
-- `htdocs/font/Parisine-Bold.woff`
-- `htdocs/font/Parisine-Bold.woff2`
-- `htdocs/font/Parisine-BoldItalic.eot`
-- `htdocs/font/Parisine-BoldItalic.ttf`
-- `htdocs/font/Parisine-BoldItalic.woff`
-- `htdocs/font/Parisine-BoldItalic.woff2`
-- `htdocs/font/Parisine-Italic.eot`
-- `htdocs/font/Parisine-Italic.ttf`
-- `htdocs/font/Parisine-Italic.woff`
-- `htdocs/font/Parisine-Italic.woff2`
-- `htdocs/font/Parisine-Regular.eot`
-- `htdocs/font/Parisine-Regular.ttf`
-- `htdocs/font/Parisine-Regular.woff`
-- `htdocs/font/Parisine-Regular.woff2`
-
-En l'absence de cette fonte, pas de panique, des polices de substitution similaires seront appelées (si elles sont installées sur votre système) :
-- Trebuchet MS
-- Helvetica
-- Une autre fonte installée sans empattement
+Vous retrouverez dans le répertoire `htdocs/font/` les instructions pour intégrer la fonte Parisine dans le projet.
