@@ -137,14 +137,26 @@ En l'absence de filtres définis, l'afficheur affichera tous les trajets, sans c
 
 ## Utilisation de WebMIV
 Maintenant que vous avez configuré et lancé WebMIV, il ne vous reste qu'à l'afficher !
-Voici l'URL type de WebMIV :
+Voici l'URL de WebMIV :
+```
+http://[IP-DU-WEBMIV]:[PORT]/
+```
 
-`http://[IP-DU-WEBMIV]:[PORT]/?display=[NOM-DE-LA-VUE]`
+La liste des affichages configurés s'affichera.
 
-_Admettons que le serveur WebMIV ai pour IP `192.168.1.200` et le `httpport` du fichier `settings.ini` avec la valeur `8080`._
+💡 Vous pouvez également utiliser des 🔗 permaliens vers un affichage précis.
+Il vous suffit alors de rajouter l'argument suivant dans l'URL et de l'enregistrer dans votre navigateur, votre dashboard ou votre afficheur web :
+```
+http://[IP-DU-WEBMIV]:[PORT]/?display=[NOM-DE-LA-VUE]
+```
+
+---
+___Admettons par exemple que le serveur WebMIV ai pour IP `192.168.1.200` et le `httpport` du fichier `settings.ini` ai pour valeur `8080`.___
 
 Pour afficher la vue préconfigurée `valdeurope-mlv`, vous devrez saisir l'URL suivant :
-`http://192.168.1.200:8080/?display=valdeurope-mlv`
+```
+http://192.168.1.200:8080/?display=valdeurope-mlv
+```
 
 Les prochains trajets s'afficheront alors, en tenant compte des paramètres propres à la vue sélectionnée.
 
@@ -158,8 +170,9 @@ Ces arguments permettent d'outrepasser leurs équivalents dans `settings.ini` :
 | `displayclock` | integer | Permet d'afficher ou de cacher l'horloge, sans tenir compte de la configuration dans `settings.ini`. | `1` pour forcer l'affichage, `0` pour cacher.  |
 
 Voici un exemple avec la vue `valdeurope-mlv` en forçant l'affichage de seulement 3 trajets (utile si la vue est affichée sur un petit écran), et en cachant l'horloge :
-
-`http://192.168.1.200:8080/?display=valdeurope-mlv&limit=3&displayclock=0`
+```
+http://192.168.1.200:8080/?display=valdeurope-mlv&limit=3&displayclock=0
+```
 
 #### Suivre un véhicule
 
@@ -169,4 +182,4 @@ Admettons, vous avez repéré un train qui serait idéal pour votre sortie, mais
 
 Pour désactiver le suivi d'un véhicule, re-cliquez tout simplement dessus.
 
-> Voilà ! Vous n'avez maintenant plus d'excuse pour rater votre train.
+> Voilà ! Vous n'avez maintenant plus d'excuse pour rater votre train. 🤓🚈

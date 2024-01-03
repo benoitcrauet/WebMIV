@@ -230,3 +230,27 @@ exports.hours = function(request, params) {
 
     return r;
 };
+
+
+/**
+ * 
+ * @param {Http.IncomingMessage} request HTTP Request
+ * @param {ParsedUrlQuery} params Query object that contains GET parameters
+ * @returns {GeneratedResponse}
+ */
+exports.displays = function(request, params) {
+    let r = new GeneratedResponse();
+    let displays = {};
+
+    for(let dis in Config) {
+        if(dis != "general") {
+            displays[dis] = Config[dis];
+        }
+    }
+
+    r.responseCode = 200;
+    r.contentType = "application/json";
+    r.responseBody = JSON.stringify(displays);
+
+    return r;
+};

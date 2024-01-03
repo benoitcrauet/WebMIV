@@ -536,7 +536,62 @@ function updateFollow() {
     else
         console.log("[TRACK] Vehicle not found here.");
 
+}
 
+// Showing all displays
+function showDisplaysIndex() {
+    $("#background").remove();
+    $("#main").remove();
+
+    // Create index container and append it to body
+    let indexContainer = $("<div>")
+        .attr("id", "indexOf");
+    
+    indexContainer.append($("<h1>Affichages configurés</h1>"))
+
+    let indexContainerList = $("<ul>");
+    
+    // Get list of displays
+    $.ajax({
+        url: "/generated/displays",
+        method: "GET",
+        success: function(response) {
+
+            for(let dis in response) {
+                let displayListItem = $("<li>");
+                let displayLink = $("<a>")
+                    .attr("href", ".?display="+dis);
+                
+                let displayLinkLine = $("<span>")
+                    .addClass("line")
+                    .css({
+                        "background-color": "#"+response[dis].linecolor,
+                        "color": getContrastColor(response[dis].linecolor)
+                    })
+                    .text((response[dis].linetype.toUpperCase() ?? "") + " " + (response[dis].linenumber.toUpperCase() ?? ""));
+            
+                let displayLinkName = $("<span>")
+                    .addClass("name")
+                    .text((response[dis].displayname ?? ""));
+                
+                // Append child elements to link...
+                displayLink
+                    .append(displayLinkLine)
+                    .append(displayLinkName);
+                
+                // ...and link to the list
+                indexContainerList.append(displayListItem.append(displayLink));
+            }
+
+        },
+        error: function(err) {
+            console.error(err);
+        }
+    });
+    
+
+    indexContainer.append(indexContainerList);
+    $("body").append(indexContainer);
 }
 
 
@@ -554,9 +609,11 @@ $(document).ready(function() {
     // Get displayID in URL
     const displayID = urlParams.get('display');
 
-    // Error if no param
-    if(displayID === null || typeof displayID != "string" || displayID.trim()=="")
-        document.write("Please set \"display\" GET parameter with a valid display ID.");
+    // Display index if no display specified
+    if(displayID === null || typeof displayID != "string" || displayID.trim()=="") {
+        console.log("Showing index of");
+        showDisplaysIndex();
+    }
     else {
         window.setInterval(function() {
             var dt = new Date();
