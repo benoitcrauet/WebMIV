@@ -163,7 +163,7 @@ body.indexof {
             }
             .bus        #banner #line_identifier { width: auto; }
             .bus        #banner #line_identifier_label { height: 46px; padding: 0px 12px; }
-            .rer        #banner #line_identifier { border-radius: 46px; }
+            .rer        #banner #line_identifier { border-radius: 8px; }
             .rer        #banner #line_identifier_label { width: inherit; height: 46px; font-size: 30px; }
             .tram       #banner #line_identifier { width: auto; border-radius: 4px; padding: 4px 0px; }
             .tram       #banner #line_identifier_label { height: 38px; padding: 0px 10px; background: white; color: black !important; }
