@@ -543,6 +543,9 @@ function showDisplaysIndex() {
     $("#background").remove();
     $("#main").remove();
 
+    // Add indexof class to body
+    $("body").addClass("indexof");
+
     // Create index container and append it to body
     let indexContainer = $("<div>")
         .attr("id", "indexOf");

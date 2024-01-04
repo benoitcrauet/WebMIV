@@ -57,6 +57,10 @@ body {
     cursor: default;
 }
 
+body.indexof {
+    overflow: auto !important;
+}
+
 #background {
     position: absolute;
     top: 0px;
@@ -224,6 +228,7 @@ body {
             justify-content: center;
             border-left: 1px solid gray;
             background-color: black;
+            cursor: pointer;
         }
 
         .vehicle.visible:first-child {
@@ -293,6 +298,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 20px;
+    margin-bottom: 20px;
 }
 
 #indexOf ul li a {
