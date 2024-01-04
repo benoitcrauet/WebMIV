@@ -7,6 +7,10 @@ Ce projet est directement inspiré de l'application pour Android [My-MIV](https:
 __WebMIV__ avait été créé à l'origine pour répondre à un besoin personnel consistant à avoir cette même interface, mais en version web, afin de pouvoir l'intégrer à Home Assistant.
 Merci à Florian d'autoriser la publication de ce projet fortement inspiré du sien !
 
+![Capture d'écran de l'interface WebMIV](https://github.com/benoitcrauet/WebMIV/assets/9050929/ddfede9b-91e0-4951-9579-9b7dce8f8eea)
+![Capture d'écran de l'interface WebMIV](https://github.com/benoitcrauet/WebMIV/assets/9050929/5db0667c-3ac0-4df1-865b-fb99c6e7cdce)
+
+
 ## Introduction
 
 __WebMIV__ est un logiciel libre sous licence AGPL-3.0 développé par [_Benoît Crauet_](https://github.com/benoitcrauet) et distribué gratuitement. Il permet l'affichage des 🚆 trains, 🚇 métros, 🚃 trams et 🚎 bus de vos lignes IDFM favorites (ou détestées, ça, c'est vous qui voyez).
@@ -55,9 +59,9 @@ Initialisez le projet en installant les dépendances :
 npm install
 ```
 
-Renommez le fichier de configuration `settings.sample.ini` en `settings.ini` :
+Dupliquez le fichier de configuration `settings.sample.ini` en `settings.ini` :
 ```bash
-mv settings.sample.ini settings.ini
+cp settings.sample.ini settings.ini
 ```
 
 Ouvrez ensuite le fichier `settings.ini` et modifiez la configuration selon vos besoins (vous trouverez à la suite de ce README des détails sur la configuration) :
@@ -107,6 +111,9 @@ Nous allons donc la créer :
 - Pour commencer, créez un compte sur le site IDFM Prim : https://prim.iledefrance-mobilites.fr/fr
 - Ensuite, cliquez sur votre nom d'utilisateur en haut à droite et allez dans "Mes jetons d'authentification".
 - Cliquez enfin sur "Générer mon nouveau jeton"
+
+![Capture d'écran du bouton "Générer mon nouveau jeton"](https://github.com/benoitcrauet/WebMIV/assets/9050929/41994708-7d36-4317-9817-9ffa5e1a38c1)
+
 
 🔑 Notez bien ce jeton et conservez-le précieusement ! <ins>__Il ne vous sera plus redonné par le site.__</ins>
 
@@ -169,14 +176,18 @@ En l'absence de filtres définis, l'afficheur affichera tous les trajets, sans c
 
 ‼️ __Important : lorsque vous changez la configuration, vous devez relancer WebMIV.__
 
-## Utilisation de WebMIV
+# Utilisation de WebMIV
 Maintenant que vous avez configuré et lancé WebMIV, il ne vous reste qu'à l'afficher !
 Voici l'URL de WebMIV :
 ```
 http://[IP-DU-WEBMIV]:[PORT]/
 ```
 
-La liste des affichages configurés s'affichera.
+Une liste des vues configurées dans `settings.ini` s'affichera alors.
+![Capture d'écran de la liste des vues configurées](https://github.com/benoitcrauet/WebMIV/assets/9050929/94253cd7-a4f4-4553-888e-1c5a7af70581)
+
+
+## Afficher une vue pré-configurée
 
 💡 Vous pouvez également utiliser des 🔗 permaliens vers un affichage précis.
 Il vous suffit alors de rajouter l'argument suivant dans l'URL et de l'enregistrer dans votre navigateur, votre dashboard ou votre afficheur web :
@@ -184,37 +195,42 @@ Il vous suffit alors de rajouter l'argument suivant dans l'URL et de l'enregistr
 http://[IP-DU-WEBMIV]:[PORT]/?display=[NOM-DE-LA-VUE]
 ```
 
----
 ___Admettons par exemple que le serveur WebMIV ai pour IP `192.168.1.200` et le `httpport` du fichier `settings.ini` ai pour valeur `8080`.___
 
-Pour afficher la vue préconfigurée `valdeurope-mlv`, vous devrez saisir l'URL suivant :
+Pour afficher la vue préconfigurée `chateaudevincennes-ladefence`, vous devrez saisir l'URL suivant :
 ```
-http://192.168.1.200:8080/?display=valdeurope-mlv
+http://192.168.1.200:8080/?display=chateaudevincennes-ladefense
 ```
+![Capture d'écran de l'interface](https://github.com/benoitcrauet/WebMIV/assets/9050929/721bf2ed-4153-4a74-b0f4-64dba9cad546)
 
 Les prochains trajets s'afficheront alors, en tenant compte des paramètres propres à la vue sélectionnée.
 
-#### Adapter l'affichage
-Vous pouvez rajouter dans l'URL appelé un ou plusieurs paramètres d'affichage permettant de surcharger certains paramètres configurés dans l'application Node.
-
-Ces arguments permettent d'outrepasser leurs équivalents dans `settings.ini` :
+## Surcharger la configuration d'affichage
+Vous pouvez rajouter dans l'URL appelé un ou plusieurs paramètres d'affichage permettant de surcharger certains paramètres configurés dans `settings.ini` :
 | Argument | Type | Decription | Exemple |
 |--|--|--|--|
 | `limit` | integer | Personnalise ponctuellement le nombre maximal de trajets à afficher, sans tenir compte de la configuration dans `settings.ini`. | `3` pour n'afficher que 3 trajets. |
 | `displayclock` | integer | Permet d'afficher ou de cacher l'horloge, sans tenir compte de la configuration dans `settings.ini`. | `1` pour forcer l'affichage, `0` pour cacher.  |
 
-Voici un exemple avec la vue `valdeurope-mlv` en forçant l'affichage de seulement 3 trajets (utile si la vue est affichée sur un petit écran), et en cachant l'horloge :
+Voici un exemple avec la vue `versailleschantiers-montparnasse` en forçant l'affichage de seulement 3 trajets (utile si la vue est affichée sur un petit écran), et en cachant l'horloge :
 ```
-http://192.168.1.200:8080/?display=valdeurope-mlv&limit=3&displayclock=0
+http://192.168.1.200:8080/?display=versailleschantiers-montparnasse&limit=3&displayclock=0
 ```
+_**Avec** les arguments de surcharge de configuration :_
+![Capture d'écran](https://github.com/benoitcrauet/WebMIV/assets/9050929/e55c9d1d-1e48-4459-bcfd-fbc9deee3f33)
 
-#### Suivre un véhicule
+_**Sans** les arguments de surcharge de configuration_
+![Capture d'écran](https://github.com/benoitcrauet/WebMIV/assets/9050929/53712565-400f-4d86-94aa-e1dbb5660591)
 
-Admettons, vous avez repéré un train qui serait idéal pour votre sortie, mais vous devez vous préparer rapidement juste avant... Avec les temps d'attente qui évoluent, vous risqueriez de le confondre avec un autre, 15 minutes après, et de risquer de le rater. Ce serait fort fâcheux.
+## Suivre un véhicule
+
+Vous avez repéré un train qui serait idéal pour votre sortie, mais vous devez vous préparer rapidement juste avant... Avec les temps d'attente qui évoluent, vous risqueriez de le confondre avec un autre, 15 minutes après, et de risquer de le rater. Ce serait fort fâcheux.
 
 💡 **Vous pouvez donc cliquer sur le train qui vous intéresse** : ceci mettra votre train en surbrillance afin que vous puissiez le surveiller en un coup d'oeil, et ce même s'il change de position sur l'écran !
 
 Pour désactiver le suivi d'un véhicule, re-cliquez tout simplement dessus.
+
+![Capture d'écran de l'interface avec un train mis en surbrillance](https://github.com/benoitcrauet/WebMIV/assets/9050929/647632bf-114e-4887-9799-37ed47bc4393)
 
 > Voilà ! Vous n'avez maintenant plus d'excuse pour rater votre train. 🤓🚈
 
