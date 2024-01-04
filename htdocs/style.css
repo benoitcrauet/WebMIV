@@ -226,13 +226,12 @@ body.indexof {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border-left: 1px solid gray;
             background-color: black;
             cursor: pointer;
         }
 
-        .vehicle.visible:first-child {
-            border-left: 0px solid transparent !important;
+        #nextVehicles > .visible ~ .visible {
+            border-left: 1px solid gray;
         }
 
         .vehicle.hide {
