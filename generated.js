@@ -54,6 +54,7 @@ exports.hours = function(request, params) {
             "apikey": Config.general.apikey
         };
         const rawResponse = Request("GET", "https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring?MonitoringRef=STIF:StopPoint:Q:" + display.stationid.toString() + ":", { headers: headers }).getBody("utf-8");
+
         const response = JSON.parse(rawResponse);
 
         // Get list of deliveries
@@ -92,19 +93,22 @@ exports.hours = function(request, params) {
 
             deliveries.forEach(delivery => {
                 // Is the good way?
-                if(!filterDirections.includes(delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "") && filterDirections.length>0) {
-                    return false;
-                }
-
+                if(delivery.MonitoredVehicleJourney.DirectionName[0] != undefined)
+                    if(!filterDirections.includes(delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "") && filterDirections.length>0) {
+                        return false;
+                    }
+                
                 // Is the good line?
-                if(!filterLines.includes(delivery.MonitoredVehicleJourney.LineRef.value ?? "") && filterLines.length>0) {
-                    return false;
-                }
+                if(delivery.MonitoredVehicleJourney.LineRef != undefined)
+                    if(!filterLines.includes(delivery.MonitoredVehicleJourney.LineRef.value ?? "") && filterLines.length>0) {
+                        return false;
+                    }
 
                 // Is the good destination?
-                if(!filterDestinations.includes(delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0].value ?? "") && filterDestinations.length>0) {
-                    return false;
-                }
+                if(delivery.MonitoredVehicleJourney.MonitoredCall != undefined && delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0] != undefined)
+                    if(!filterDestinations.includes(delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0].value ?? "") && filterDestinations.length>0) {
+                        return false;
+                    }
 
                 travels.push(delivery);
             });

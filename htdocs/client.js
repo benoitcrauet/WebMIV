@@ -670,7 +670,7 @@ $(document).ready(function() {
                 $("#clock_separator").css("opacity", 1);
             }
             else {
-                $("#clock_separator").css("opacity", 0.5);
+                $("#clock_separator").css("opacity", 0.4);
             }
         }, 50);
     }

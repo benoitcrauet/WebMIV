@@ -131,11 +131,17 @@ body {
                 background-position: center;
                 background-size: contain;
             }
-            .bus        #banner #line_logo { background-image: url("./images/bus.svg"); }
-            .rer        #banner #line_logo { background-image: url("./images/rer.svg"); }
-            .tram       #banner #line_logo { background-image: url("./images/tram.svg"); }
-            .transilien #banner #line_logo { background-image: url("./images/transilien.svg"); }
-            .metro      #banner #line_logo { background-image: url("./images/metro.svg"); }
+
+            #banner #line_logo img {
+                display: none;
+            }
+
+            .bus        #banner #line_logo .logo-bus { display: block; }
+            .metro      #banner #line_logo .logo-metro { display: block; }
+            .rer        #banner #line_logo .logo-rer { display: block; }
+            .tram       #banner #line_logo .logo-tram { display: block; }
+            .transilien #banner #line_logo .logo-transilien { display: block; }
+
 
             #banner #line_identifier {
                 margin: 2px;
@@ -153,14 +159,14 @@ body {
             }
             .bus        #banner #line_identifier { width: auto; }
             .bus        #banner #line_identifier_label { height: 46px; padding: 0px 12px; }
-            .rer        #banner #line_identifier { border-radius: 12px; }
-            .rer        #banner #line_identifier_label { width: inherit; height: 46px; }
+            .rer        #banner #line_identifier { border-radius: 46px; }
+            .rer        #banner #line_identifier_label { width: inherit; height: 46px; font-size: 30px; }
             .tram       #banner #line_identifier { width: auto; border-radius: 4px; padding: 4px 0px; }
             .tram       #banner #line_identifier_label { height: 38px; padding: 0px 10px; background: white; color: black !important; }
             .transilien #banner #line_identifier { border-radius: 12px; }
             .transilien #banner #line_identifier_label { width: inherit; height: 46px; }
             .metro      #banner #line_identifier { border-radius: 46px; }
-            .metro      #banner #line_identifier_label { width: inherit; height: 46px; }
+            .metro      #banner #line_identifier_label { width: inherit; height: 46px; font-size: 32px; }
 
         #banner #stopname {
             padding: 0px 12px;
@@ -221,7 +227,7 @@ body {
         }
 
         .vehicle.visible:first-child {
-            border-left: none !important;
+            border-left: 0px solid transparent !important;
         }
 
         .vehicle.hide {
