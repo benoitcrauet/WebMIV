@@ -230,7 +230,7 @@ function updateElements(display) {
                     var vehicle = $("<div>")
                         .addClass("vehicle")
                         .attr("id", travel.GUID)
-                        .on("click touchstart", function(element) {
+                        .on("click", function(element) {
                             toggleVehicleFollow(element.currentTarget.id)
                             updateFollow();
                         })
