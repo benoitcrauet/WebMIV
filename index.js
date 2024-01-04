@@ -27,7 +27,7 @@ const HttpServer = Http.createServer(function(request, response) {
     console.log(" ");
 
     // Making path
-    let filePath = Path.join(__dirname, 'htdocs', requestedUrl);
+    let filePath = Path.join(__dirname, 'htdocs', requestedUrl).replace(/\\/g, "/");
     
     // If filePath is a generated file
     if(requestedUrl.substring(0, "/generated/".length) == "/generated/")
