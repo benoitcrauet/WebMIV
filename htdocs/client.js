@@ -637,10 +637,10 @@ $(document).ready(function() {
         // Update elements from API now
         updateElements(displayID);
 
-        // Get informations from API every minutes
+        // Get informations from API regularly
         window.setInterval(function() {
             updateElements(displayID);
-        }, 60000);
+        }, 90000);
 
         // Recalculate all elements every 10 seconds
         window.setInterval(function() {
