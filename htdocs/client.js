@@ -312,7 +312,9 @@ function updateElements(display) {
                 }
 
                 // Convert datetime to waiting time
-                updateTimings(travel.GUID);
+                window.setTimeout(function() {
+                    updateTimings(travel.GUID);
+                }, 10);
 
                 // Sort objects
                 sortObjects();
@@ -449,7 +451,10 @@ function sortObjects() {
         return aTime - bTime;
     });
 
-    divs.detach().appendTo(container);
+    let orderIndex = 1;
+    divs.each(function() {
+        $("#" + $(this).attr("id")).css("order", orderIndex++);
+    });
 }
 
 function limitObjects(limit) {
@@ -515,9 +520,9 @@ function updateFollow() {
     let currentFollowGUIDFound = false;
 
     if(currentFollowGUID != null)
-        console.log("[TRACK] Currently tracked vehicle GUID: " + currentFollowGUID + "...");
+        if(traceMode) console.log("[VEHICLE TRACKER] Currently tracked vehicle GUID: " + currentFollowGUID + "...");
     else
-        console.log("[TRACK] Currently no vehicle are being tracked.");
+        if(traceMode) console.log("[VEHICLE TRACKER] Currently no vehicle are being tracked.");
     
     // List of vehicles in DOM
     $("#nextVehicles > .vehicle").each(function() {
@@ -532,9 +537,9 @@ function updateFollow() {
     });
 
     if(currentFollowGUIDFound)
-        console.log("[TRACK] Vehicle found! Highlighted.");
+        if(traceMode) console.log("[VEHICLE TRACKER] Vehicle found! Highlighted.");
     else
-        console.log("[TRACK] Vehicle not found here.");
+        if(traceMode) console.log("[VEHICLE TRACKER] Vehicle not found here.");
 
 }
 
@@ -614,7 +619,7 @@ $(document).ready(function() {
 
     // Display index if no display specified
     if(displayID === null || typeof displayID != "string" || displayID.trim()=="") {
-        console.log("Showing index of");
+        if(traceMode) console.log("Showing index of");
         showDisplaysIndex();
     }
     else {

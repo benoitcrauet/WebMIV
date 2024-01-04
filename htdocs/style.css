@@ -220,7 +220,6 @@ body.indexof {
         }
 
         #nextVehicles .vehicle {
-            transition: background-color .3s;
             flex-basis: 0;
             flex-grow: 1;
             display: flex;
@@ -228,14 +227,42 @@ body.indexof {
             justify-content: center;
             background-color: black;
             cursor: pointer;
+            overflow: hidden;
+            flex-grow: 0;
+            opacity: 0;
+            transition: background-color .5s, border-left-color 2s, border-left-width 0s 2s, flex-grow 2s, opacity 2s;
+            animation: vehicleAppear 2s ease;
+        }
+
+        @keyframes vehicleAppear {
+            from {
+              opacity: 0;
+              flex-grow: 0;
+            }
+            to {
+              opacity: 1;
+              flex-grow: 1;
+            }
+          }
+
+        #nextVehicles .visible {
+            flex-grow: 1;
+            opacity: 1;
+            border-left-color: transparent;
+            border-left-style: solid;
+            border-left-width: 0px;
         }
 
         #nextVehicles > .visible ~ .visible {
             border-left: 1px solid gray;
+            border-left-color: gray !important;
+            border-left-width: 1px;
+            transition: border-left-width 2s;
         }
 
         .vehicle.hide {
-            display: none !important;
+            flex-grow: 0 !important;
+            opacity: 0 !important;
         }
 
         .vehicle.filtered {
