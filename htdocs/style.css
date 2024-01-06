@@ -230,12 +230,12 @@ body.indexof {
             overflow: hidden;
             flex-grow: 0;
             opacity: 0;
-            border-left-width: 0.5px;
-            border-right-width: 0.5px;
+            border-left-width: 0px;
+            border-right-width: 0px;
             border-left-style: solid;
             border-right-style: solid;
             border-color: transparent;
-            transition: border-color 2s, background-color .5s, border-left-width 0s 2s, flex-grow 2s, opacity 2s;
+            transition: border-color 2s, border-right-width 2s, border-left-width 2s, background-color .5s, flex-grow 2s, opacity 2s;
             animation: vehicleAppear 2s ease;
         }
 
@@ -254,11 +254,16 @@ body.indexof {
             flex-grow: 1;
             opacity: 1;
             border-color: #555;
+            border-left-width: 1px;
+            border-right-width: 1px;
         }
 
         .vehicle.hide {
             flex-grow: 0 !important;
             opacity: 0 !important;
+            border-color: transparent;
+            border-left-width: 0px;
+            border-right-width: 0px;
         }
 
         .vehicle.filtered {
