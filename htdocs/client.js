@@ -312,12 +312,7 @@ function updateElements(display) {
                 }
 
                 // Convert datetime to waiting time
-                window.setTimeout(function() {
-                    updateTimings(travel.GUID);
-                }, 10);
-
-                // Sort objects
-                sortObjects();
+                updateTimings(travel.GUID);
     
                 // Limit objects
                 limitObjects(objectsLimit);
@@ -325,6 +320,9 @@ function updateElements(display) {
 
             // Update follow display
             updateFollow();
+
+            // Sort objects
+            sortObjects();
 
             // Log elements
             addToLog(registeredElements, logType.elements);
@@ -439,6 +437,7 @@ function updateTimings(GUID) {
 }
 
 function sortObjects() {
+    
     if(pauseRefresh)
         return false;
 
@@ -463,7 +462,13 @@ function limitObjects(limit) {
 
     // Limit only if limit is set to >0 and is not null
     if(limit > 0 && limit !== null) {
-        const vehicles = document.querySelectorAll(".vehicle");
+        const vehicles = $("#nextVehicles").children(".vehicle");
+
+        vehicles.sort(function(a,b) {
+            const aTime = parseInt($(a).attr('data-waitingtime') ?? 0);
+            const bTime = parseInt($(b).attr('data-waitingtime') ?? 0);
+            return aTime - bTime;
+        });
 
         let i = 1;
         let o = 1;
