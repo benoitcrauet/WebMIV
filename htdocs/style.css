@@ -260,8 +260,7 @@ body.indexof {
         }
 
             .vehicle .vehicleTitle {
-                font-size: 36px;
-                padding: 10px 20px;
+                display: none;
             }
 
             .vehicle .vehicleWait {
