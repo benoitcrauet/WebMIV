@@ -432,3 +432,43 @@ body.indexof {
         display: none;
     }
 }
+
+@media (max-height: 300px) {
+    .vehicleWait_value {
+        font-size: 160px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 40px;
+    }
+}
+
+@media (max-height: 250px) {
+    .vehicleWait_value {
+        font-size: 120px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 30px;
+    }
+}
+
+@media (max-height: 200px) {
+    .vehicleWait_value {
+        font-size: 80px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 20px;
+    }
+}
+
+@media (max-height: 150px) {
+    .vehicleWait_value {
+        font-size: 60px;
+    }
+
+    .vehicleWait_unit {
+        font-size: 15px;
+    }
+}

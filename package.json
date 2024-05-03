@@ -1,7 +1,7 @@
 {
-  "name": "WebMIV",
+  "name": "webmiv",
   "version": "1.5.0",
-  "description": "",
+  "description": "Félicitations pour l'acquisition de votre superbe copie de __WebMIV__ ! 🎉",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,5 +20,7 @@
     "ini": "^4.1.1",
     "mime": "^3.0.0",
     "sync-request": "^6.1.0"
-  }
+  },
+  "devDependencies": {},
+  "keywords": []
 }
