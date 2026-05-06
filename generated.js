@@ -53,7 +53,22 @@ exports.hours = function(request, params) {
         const headers = {
             "apikey": Config.general.apikey
         };
-        const rawResponse = Request("GET", "https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring?MonitoringRef=STIF:StopPoint:Q:" + display.stationid.toString() + ":", { headers: headers }).getBody("utf-8");
+
+        let ref = "";
+        if(display.stationid !== undefined)
+            ref = "STIF:StopPoint:Q:" + display.stationid.toString() + ":";
+        if(display.areaid !== undefined)
+            ref = "STIF:StopArea:SP:" + display.areaid.toString() + ":";
+
+        if (ref === "") {
+            r.responseCode = 400;
+            r.responseBody = "No stationid or areaid defined for this display.";
+            return r;
+        }
+        
+        const url = "https://prim.iledefrance-mobilites.fr/marketplace/stop-monitoring?MonitoringRef=" + ref;
+        
+        const rawResponse = Request("GET", url, { headers: headers }).getBody("utf-8");
 
         const response = JSON.parse(rawResponse);
 
