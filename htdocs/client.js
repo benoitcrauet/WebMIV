@@ -11,6 +11,8 @@ let traceMode = true; // Trace mode on or off
 
 let pauseRefresh = false; // Pause refresh mode on or off
 
+let serverTimeDelta = 0; // Time delta between server and client in milliseconds
+
 /**
  * Display console help message.
  */
@@ -358,7 +360,7 @@ function updateTimings(GUID) {
         let dateDeparture = new Date(element.attr("data-departureTime"));
 
         // Get current date
-        let currentDate = new Date();
+        let currentDate = new Date(Date.now() + serverTimeDelta);
 
         // Calculate deltas in seconds
         //let deltaArrival = Math.round((dateArrival - currentDate) / 1000);
@@ -628,8 +630,15 @@ $(document).ready(function() {
         showDisplaysIndex();
     }
     else {
+        // Start synchronizing time with server
+        syncTimeWithServer();
+
+        // Update server time delta every 5 minutes
+        window.setInterval(syncTimeWithServer, 300000);
+
+        // Clock updater
         window.setInterval(function() {
-            var dt = new Date();
+            var dt = new Date(Date.now() + serverTimeDelta);
 
             var hr = dt.getHours();
             var mn = dt.getMinutes();
@@ -705,3 +714,26 @@ setInterval(function() {
         }
     }
 }, 500);
+
+
+
+/**
+ * Synchronize server time with client time by calculating the delta between them.
+ */
+async function syncTimeWithServer() {
+    const t1 = Date.now();
+    try {
+        const response = await fetch("/datetime");
+        const data = await response.json();
+        const t2 = Date.now();
+
+        const serverTime = new Date(data.iso).getTime();
+        const latence = (t2 - t1) / 2;
+
+        serverTimeDelta = (serverTime + latence) - t2;
+
+        if(traceMode) console.log(`Server time: ${new Date(serverTime).toISOString()}, Client time: ${new Date(t2).toISOString()}, Latence: ${latence} ms, Server delta: ${serverDelta} ms`);
+    } catch (error) {
+        console.error("Error synchronizing time with server:", error);
+    }
+}

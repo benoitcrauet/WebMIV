@@ -65,6 +65,15 @@ const HttpServer = Http.createServer(function(request, response) {
 
         
     }
+    else if(requestedUrl == "/datetime")
+    {
+        const data = JSON.stringify({
+            iso: new Date().toISOString()
+        });
+        response.statusCode = 200;
+        response.setHeader('Content-Type', "application/json");
+        response.end(data);
+    }
     else
     {
         // Is requested URL index?
