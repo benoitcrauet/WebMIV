@@ -106,24 +106,47 @@ exports.hours = function(request, params) {
             // Initialize list of travels
             var travels = [];
 
-            deliveries.forEach(delivery => {
-                // Is the good way?
-                if(delivery.MonitoredVehicleJourney.DirectionName[0] != undefined)
-                    if(!filterDirections.includes(delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "") && filterDirections.length>0) {
-                        return false;
-                    }
-                
-                // Is the good line?
-                if(delivery.MonitoredVehicleJourney.LineRef != undefined)
-                    if(!filterLines.includes(delivery.MonitoredVehicleJourney.LineRef.value ?? "") && filterLines.length>0) {
-                        return false;
-                    }
+            let invertLines = display.filterLineInverted === "true" || display.filterLineInverted === true;
+            let invertDirections = display.filterDirectionInverted === "true" || display.filterDirectionInverted === true;
+            let invertDestinations = display.filterDestinationInverted === "true" || display.filterDestinationInverted === true;
 
-                // Is the good destination?
-                if(delivery.MonitoredVehicleJourney.MonitoredCall != undefined && delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0] != undefined)
-                    if(!filterDestinations.includes(delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0].value ?? "") && filterDestinations.length>0) {
-                        return false;
+            deliveries.forEach(delivery => {
+                // Filtrage des Directions
+                if(delivery.MonitoredVehicleJourney.DirectionName[0] != undefined) {
+                    const directionVal = delivery.MonitoredVehicleJourney.DirectionName[0].value ?? "";
+                    const isDirectionInList = filterDirections.includes(directionVal);
+                    
+                    if (filterDirections.length > 0) {
+                        // Si (normal et pas dans liste) OU (inversé et dans liste) -> on rejette
+                        if ((!invertDirections && !isDirectionInList) || (invertDirections && isDirectionInList)) {
+                            return false;
+                        }
                     }
+                }
+                
+                // Filtrage des Lignes
+                if(delivery.MonitoredVehicleJourney.LineRef != undefined) {
+                    const lineVal = delivery.MonitoredVehicleJourney.LineRef.value ?? "";
+                    const isLineInList = filterLines.includes(lineVal);
+                    
+                    if (filterLines.length > 0) {
+                        if ((!invertLines && !isLineInList) || (invertLines && isLineInList)) {
+                            return false;
+                        }
+                    }
+                }
+
+                // Filtrage des Destinations
+                if(delivery.MonitoredVehicleJourney.MonitoredCall != undefined && delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0] != undefined) {
+                    const destVal = delivery.MonitoredVehicleJourney.MonitoredCall.DestinationDisplay[0].value ?? "";
+                    const isDestInList = filterDestinations.includes(destVal);
+                    
+                    if (filterDestinations.length > 0) {
+                        if ((!invertDestinations && !isDestInList) || (invertDestinations && isDestInList)) {
+                            return false;
+                        }
+                    }
+                }
 
                 travels.push(delivery);
             });
