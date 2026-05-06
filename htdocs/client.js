@@ -732,7 +732,7 @@ async function syncTimeWithServer() {
 
         serverTimeDelta = (serverTime + latence) - t2;
 
-        if(traceMode) console.log(`Server time: ${new Date(serverTime).toISOString()}, Client time: ${new Date(t2).toISOString()}, Latence: ${latence} ms, Server delta: ${serverDelta} ms`);
+        if(traceMode) console.log(`Server time: ${new Date(serverTime).toISOString()}, Client time: ${new Date(t2).toISOString()}, Latence: ${latence} ms, Server delta: ${serverTimeDelta} ms`);
     } catch (error) {
         console.error("Error synchronizing time with server:", error);
     }
